@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ToDosTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-08-25T15:30:22" hostname="Shaunes-MacBook-Pro.local" time="0.001">
-  <properties/>
-  <testcase name="anotherDummyTest()" classname="ToDosTest" time="0.0"/>
-  <testcase name="test()" classname="ToDosTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Config.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.commons.core</a> &gt; <span class="el_source">Config.java</span></div><h1>Config.java</h1><pre class="source lang-java linenums">package seedu.address.commons.core;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.logging.Level;
+
+/**
+ * Config values used by the app
+ */
+<span class="nc" id="L11">public class Config {</span>
+
+<span class="nc" id="L13">    public static final Path DEFAULT_CONFIG_FILE = Paths.get(&quot;config.json&quot;);</span>
+
+    // Config values customizable through config file
+<span class="nc" id="L16">    private Level logLevel = Level.INFO;</span>
+<span class="nc" id="L17">    private Path userPrefsFilePath = Paths.get(&quot;preferences.json&quot;);</span>
+
+    public Level getLogLevel() {
+<span class="nc" id="L20">        return logLevel;</span>
+    }
+
+    public void setLogLevel(Level logLevel) {
+<span class="nc" id="L24">        this.logLevel = logLevel;</span>
+<span class="nc" id="L25">    }</span>
+
+    public Path getUserPrefsFilePath() {
+<span class="nc" id="L28">        return userPrefsFilePath;</span>
+    }
+
+    public void setUserPrefsFilePath(Path userPrefsFilePath) {
+<span class="nc" id="L32">        this.userPrefsFilePath = userPrefsFilePath;</span>
+<span class="nc" id="L33">    }</span>
+
+    @Override
+    public boolean equals(Object other) {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (other == this) {</span>
+<span class="nc" id="L38">            return true;</span>
+        }
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (!(other instanceof Config)) { //this handles null as well.</span>
+<span class="nc" id="L41">            return false;</span>
+        }
+
+<span class="nc" id="L44">        Config o = (Config) other;</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        return Objects.equals(logLevel, o.logLevel)</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                &amp;&amp; Objects.equals(userPrefsFilePath, o.userPrefsFilePath);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L52">        return Objects.hash(logLevel, userPrefsFilePath);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L57">        String sb = &quot;Current log level : &quot; + logLevel</span>
+                + &quot;\nPreference file Location : &quot; + userPrefsFilePath;
+<span class="nc" id="L59">        return sb;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MeetingsWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.ui</a> &gt; <span class="el_source">MeetingsWindow.java</span></div><h1>MeetingsWindow.java</h1><pre class="source lang-java linenums">package seedu.address.ui;
+
+import java.time.LocalDateTime;
+import java.util.logging.Logger;
+
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.Logic;
+import seedu.address.model.person.Person;
+
+/**
+ * Controller for a meetings page
+ */
+public class MeetingsWindow extends UiPart&lt;Stage&gt; {
+    public static final String MEETINGS_MESSAGE = &quot;These are the meetings you have for the week.&quot;;
+<span class="nc" id="L20">    private static final Logger logger = LogsCenter.getLogger(MeetingsWindow.class);</span>
+    private static final String FXML = &quot;MeetingsWindow.fxml&quot;;
+    private MeetingListPanel meetingListPanel;
+    private final Logic logic;
+
+    @FXML
+    private StackPane meetingListPanelPlaceholder;
+
+    @FXML
+    private Label meetingsMessage;
+
+    /**
+     * Creates a new MeetingsWindow.
+     *
+     * @param root Stage to use as the root of the MeetingsWindow.
+     */
+    public MeetingsWindow(Stage root, Logic logic) {
+<span class="nc" id="L37">        super(FXML, root);</span>
+<span class="nc" id="L38">        meetingsMessage.setText(MEETINGS_MESSAGE);</span>
+<span class="nc" id="L39">        this.logic = logic;</span>
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Creates a new MeetingsWindow.
+     */
+    public MeetingsWindow(Logic logic) {
+<span class="nc" id="L46">        this(new Stage(), logic);</span>
+<span class="nc" id="L47">    }</span>
+
+    /**
+     * Shows the meetings window.
+     * @throws IllegalStateException
+     *     &lt;ul&gt;
+     *         &lt;li&gt;
+     *             if this method is called on a thread other than the JavaFX Application Thread.
+     *         &lt;/li&gt;
+     *         &lt;li&gt;
+     *             if this method is called during animation or layout processing.
+     *         &lt;/li&gt;
+     *         &lt;li&gt;
+     *             if this method is called on the primary stage.
+     *         &lt;/li&gt;
+     *         &lt;li&gt;
+     *             if {@code dialogStage} is already showing.
+     *         &lt;/li&gt;
+     *     &lt;/ul&gt;
+     */
+    public void show() {
+<span class="nc" id="L68">        logger.fine(&quot;Showing meetings page about the application.&quot;);</span>
+<span class="nc" id="L69">        getRoot().show();</span>
+<span class="nc" id="L70">        getRoot().centerOnScreen();</span>
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * Returns true if the meetings window is currently being shown.
+     */
+    public boolean isShowing() {
+<span class="nc" id="L77">        return getRoot().isShowing();</span>
+    }
+
+    /**
+     * Hides the meetings window.
+     */
+    public void hide() {
+<span class="nc" id="L84">        getRoot().hide();</span>
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * Focuses on the meetings window.
+     */
+    public void focus() {
+<span class="nc" id="L91">        getRoot().requestFocus();</span>
+<span class="nc" id="L92">    }</span>
+
+    /**
+     * Generates a list of meetings with all contacts in FABook and creates a meetingListPanel
+     */
+    protected void getMeetings() {
+<span class="nc" id="L98">        ObservableList&lt;Person&gt; personObservableList = logic.getFilteredPersonList();</span>
+<span class="nc" id="L99">        ObservableList&lt;Person&gt; filteredList =</span>
+<span class="nc" id="L100">            personObservableList.filtered(person -&gt;</span>
+<span class="nc" id="L101">                person.getMeetingTimes().stream().anyMatch(meetingTime -&gt; isWithinOneWeek(meetingTime.getDate())));</span>
+<span class="nc" id="L102">        meetingListPanel = new MeetingListPanel(filteredList);</span>
+<span class="nc" id="L103">        meetingListPanelPlaceholder.getChildren().add(meetingListPanel.getRoot());</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Checks if a given local date time is within one week from now
+     * @param meetingTime
+     * @return Boolean. True if within one week
+     */
+    private boolean isWithinOneWeek(LocalDateTime meetingTime) {
+<span class="nc" id="L112">        LocalDateTime now = LocalDateTime.now();</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">        return meetingTime.isAfter(now) &amp;&amp; meetingTime.isBefore(now.plusWeeks(1));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

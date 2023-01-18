@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CommandTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-08-25T15:30:22" hostname="Shaunes-MacBook-Pro.local" time="0.043">
+  <properties/>
+  <testcase name="testExecute()" classname="CommandTest" time="0.043"/>
+  <system-out><![CDATA[	Got it. I've added this task:
+	  [E] [ ] Justin Bieber Concert (at: Aug 19 2019)
+	Now you have 1 tasks in the list.
+	Good Job on completing the task! I've marked this task as done:
+	   [E] [X] Justin Bieber Concert (at: Aug 19 2019)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

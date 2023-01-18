@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonAdaptedPerson.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.storage</a> &gt; <span class="el_source">JsonAdaptedPerson.java</span></div><h1>JsonAdaptedPerson.java</h1><pre class="source lang-java linenums">package seedu.address.storage;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Description;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.FilePath;
+import seedu.address.model.person.MeetingTime;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.NetWorth;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Jackson-friendly version of {@link Person}.
+ */
+class JsonAdaptedPerson {
+
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = &quot;Person's %s field is missing!&quot;;
+
+    private final String name;
+    private final String phone;
+    private final String email;
+    private final String address;
+    private final String description;
+    private final String netWorth;
+<span class="nc" id="L37">    private final List&lt;JsonAdaptedMeetingTime&gt; meetingTimes = new ArrayList&lt;&gt;();</span>
+    private final String filePath;
+<span class="nc" id="L39">    private final List&lt;JsonAdaptedTag&gt; tagged = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     */
+    @JsonCreator
+    public JsonAdaptedPerson(@JsonProperty(&quot;name&quot;) String name, @JsonProperty(&quot;phone&quot;) String phone,
+            @JsonProperty(&quot;email&quot;) String email, @JsonProperty(&quot;address&quot;) String address,
+                             @JsonProperty(&quot;description&quot;) String description,
+                             @JsonProperty(&quot;netWorth&quot;) String netWorth,
+                             @JsonProperty(&quot;meetingTime&quot;) List&lt;JsonAdaptedMeetingTime&gt; meetingTimes,
+                             @JsonProperty(&quot;filePath&quot;) String filePath,
+<span class="nc" id="L51">                             @JsonProperty(&quot;tagged&quot;) List&lt;JsonAdaptedTag&gt; tagged) {</span>
+<span class="nc" id="L52">        this.name = name;</span>
+<span class="nc" id="L53">        this.phone = phone;</span>
+<span class="nc" id="L54">        this.email = email;</span>
+<span class="nc" id="L55">        this.address = address;</span>
+<span class="nc" id="L56">        this.description = description;</span>
+<span class="nc" id="L57">        this.netWorth = netWorth;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (meetingTimes != null) {</span>
+<span class="nc" id="L59">            this.meetingTimes.addAll(meetingTimes);</span>
+        }
+<span class="nc" id="L61">        this.filePath = filePath;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (tagged != null) {</span>
+<span class="nc" id="L63">            this.tagged.addAll(tagged);</span>
+        }
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Converts a given {@code Person} into this class for Jackson use.
+     */
+<span class="nc" id="L70">    public JsonAdaptedPerson(Person source) {</span>
+<span class="nc" id="L71">        name = source.getName().getFullName();</span>
+<span class="nc" id="L72">        phone = source.getPhone().getValue();</span>
+<span class="nc" id="L73">        email = source.getEmail().getValue();</span>
+<span class="nc" id="L74">        address = source.getAddress().getValue();</span>
+<span class="nc" id="L75">        description = source.getDescription().getValue();</span>
+<span class="nc" id="L76">        netWorth = source.getNetWorth().getValue();</span>
+<span class="nc" id="L77">        meetingTimes.addAll(source.getMeetingTimes().stream()</span>
+<span class="nc" id="L78">                .map(JsonAdaptedMeetingTime::new)</span>
+<span class="nc" id="L79">                .collect(Collectors.toList()));</span>
+<span class="nc" id="L80">        filePath = source.getFilePath().getValue();</span>
+<span class="nc" id="L81">        tagged.addAll(source.getTags().stream()</span>
+<span class="nc" id="L82">                .map(JsonAdaptedTag::new)</span>
+<span class="nc" id="L83">                .collect(Collectors.toList()));</span>
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     *
+     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
+     */
+    public Person toModelType() throws IllegalValueException {
+<span class="nc" id="L92">        final List&lt;Tag&gt; personTags = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        for (JsonAdaptedTag tag : tagged) {</span>
+<span class="nc" id="L94">            personTags.add(tag.toModelType());</span>
+<span class="nc" id="L95">        }</span>
+
+<span class="nc" id="L97">        final List&lt;MeetingTime&gt; personMeetingTimes = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        for (JsonAdaptedMeetingTime meetingTime : meetingTimes) {</span>
+<span class="nc" id="L99">            personMeetingTimes.add(meetingTime.toModelType());</span>
+<span class="nc" id="L100">        }</span>
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L103">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));</span>
+        }
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (!Name.isValidName(name)) {</span>
+<span class="nc" id="L106">            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="nc" id="L108">        final Name modelName = new Name(name);</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (phone == null) {</span>
+<span class="nc" id="L111">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));</span>
+        }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (!Phone.isValidPhone(phone)) {</span>
+<span class="nc" id="L114">            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="nc" id="L116">        final Phone modelPhone = new Phone(phone);</span>
+
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (email == null) {</span>
+<span class="nc" id="L119">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));</span>
+        }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (!Email.isValidEmail(email)) {</span>
+<span class="nc" id="L122">            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="nc" id="L124">        final Email modelEmail = new Email(email);</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (address == null) {</span>
+<span class="nc" id="L127">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));</span>
+        }
+
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (!Address.isValidAddress(address)) {</span>
+<span class="nc" id="L131">            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);</span>
+        }
+
+<span class="nc" id="L134">        final Address modelAddress = new Address(address);</span>
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (netWorth == null) {</span>
+<span class="nc" id="L137">            throw new IllegalValueException(</span>
+<span class="nc" id="L138">                    String.format(MISSING_FIELD_MESSAGE_FORMAT, NetWorth.class.getSimpleName()));</span>
+        }
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (!NetWorth.isValidNetWorth(netWorth)) {</span>
+<span class="nc" id="L141">            throw new IllegalValueException(NetWorth.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="nc" id="L143">        final NetWorth modelNetWorth = new NetWorth(netWorth);</span>
+
+<span class="nc" id="L145">        final Set&lt;MeetingTime&gt; modelMeetingTimes = new HashSet&lt;&gt;(personMeetingTimes);</span>
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (filePath == null) {</span>
+<span class="nc" id="L148">            throw new IllegalValueException(</span>
+<span class="nc" id="L149">                    String.format(MISSING_FIELD_MESSAGE_FORMAT, FilePath.class.getSimpleName()));</span>
+        }
+
+<span class="nc" id="L152">        final FilePath modelFilePath = new FilePath(filePath);</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (description == null) {</span>
+<span class="nc" id="L155">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,</span>
+<span class="nc" id="L156">                Description.class.getSimpleName()));</span>
+        }
+<span class="nc" id="L158">        final Description modelDescription = new Description(description);</span>
+
+<span class="nc" id="L160">        final Set&lt;Tag&gt; modelTags = new HashSet&lt;&gt;(personTags);</span>
+<span class="nc" id="L161">        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelDescription,</span>
+                modelNetWorth, modelMeetingTimes, modelFilePath, modelTags);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

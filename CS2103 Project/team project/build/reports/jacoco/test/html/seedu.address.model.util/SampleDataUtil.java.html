@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SampleDataUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.model.util</a> &gt; <span class="el_source">SampleDataUtil.java</span></div><h1>SampleDataUtil.java</h1><pre class="source lang-java linenums">package seedu.address.model.util;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import seedu.address.model.AddressBook;
+import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Description;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.FilePath;
+import seedu.address.model.person.MeetingTime;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.NetWorth;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Contains utility methods for populating {@code AddressBook} with sample data.
+ */
+<span class="nc" id="L23">public class SampleDataUtil {</span>
+
+<span class="nc" id="L25">    public static final Description EMPTY_DESCRIPTION = new Description(Person.EMPTY_FIELD_VALUE);</span>
+
+
+    public static Person[] getSamplePersons() {
+<span class="nc" id="L29">        return new Person[] {</span>
+            new Person(new Name(&quot;Alex Yeoh&quot;), new Phone(&quot;87438807&quot;), new Email(&quot;alexyeoh@example.com&quot;),
+                    new Address(&quot;Blk 30 Geylang Street 29, #06-40&quot;), new Description(&quot;Likes coffee&quot;),
+<span class="nc" id="L32">                    new NetWorth(&quot;$3000&quot;), getMeetingTimeSet(&quot;17-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L33">                    getTagSet(&quot;POTENTIAL&quot;)),</span>
+            new Person(new Name(&quot;Bernice Yu&quot;), new Phone(&quot;99272758&quot;), new Email(&quot;berniceyu@example.com&quot;),
+                    new Address(&quot;Blk 30 Lorong 3 Serangoon Gardens, #07-18&quot;), new Description(&quot;Likes tea&quot;),
+<span class="nc" id="L36">                    new NetWorth(&quot;$5000&quot;), getMeetingTimeSet(&quot;18-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L37">                    getTagSet(&quot;SECURED&quot;)),</span>
+            new Person(new Name(&quot;Charlotte Oliveiro&quot;), new Phone(&quot;93210283&quot;), new Email(&quot;charlotte@example.com&quot;),
+                    new Address(&quot;Blk 11 Ang Mo Kio Street 74, #11-04&quot;), new Description(&quot;Likes wine&quot;),
+<span class="nc" id="L40">                    new NetWorth(&quot;$1000000&quot;), getMeetingTimeSet(&quot;19-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L41">                    getTagSet(&quot;SECURED&quot;)),</span>
+            new Person(new Name(&quot;David Li&quot;), new Phone(&quot;91031282&quot;), new Email(&quot;lidavid@example.com&quot;),
+                    new Address(&quot;Blk 436 Serangoon Gardens Street 26, #16-43&quot;), new Description(&quot;Likes beer&quot;),
+<span class="nc" id="L44">                    new NetWorth(&quot;$2000&quot;), getMeetingTimeSet(&quot;20-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L45">                    getTagSet(&quot;POTENTIAL&quot;)),</span>
+            new Person(new Name(&quot;Irfan Ibrahim&quot;), new Phone(&quot;92492021&quot;), new Email(&quot;irfan@example.com&quot;),
+                    new Address(&quot;Blk 47 Tampines Street 20, #17-35&quot;), new Description(&quot;Likes fruit juice&quot;),
+<span class="nc" id="L48">                    new NetWorth(&quot;$1000&quot;), getMeetingTimeSet(&quot;21-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L49">                    getTagSet(&quot;POTENTIAL&quot;)),</span>
+            new Person(new Name(&quot;Roy Balakrishnan&quot;), new Phone(&quot;92624417&quot;), new Email(&quot;royb@example.com&quot;),
+                    new Address(&quot;Blk 45 Aljunied Street 85, #11-31&quot;), new Description(&quot;Likes hard liquor&quot;),
+<span class="nc" id="L52">                    new NetWorth(&quot;$3500&quot;), getMeetingTimeSet(&quot;22-10-2022-14:00&quot;), new FilePath(&quot;&quot;),</span>
+<span class="nc" id="L53">                    getTagSet(&quot;SECURED&quot;))</span>
+        };
+    }
+    public static ReadOnlyAddressBook getSampleAddressBook() {
+<span class="nc" id="L57">        AddressBook sampleAb = new AddressBook();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Person samplePerson : getSamplePersons()) {</span>
+<span class="nc" id="L59">            sampleAb.addPerson(samplePerson);</span>
+        }
+<span class="nc" id="L61">        return sampleAb;</span>
+    }
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    public static Set&lt;MeetingTime&gt; getMeetingTimeSet(String... strings) {
+<span class="nc" id="L67">        return Arrays.stream(strings)</span>
+<span class="nc" id="L68">                .map(MeetingTime::new)</span>
+<span class="nc" id="L69">                .collect(Collectors.toSet());</span>
+    }
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    public static Set&lt;Tag&gt; getTagSet(String... strings) {
+<span class="nc" id="L75">        return Arrays.stream(strings)</span>
+<span class="nc" id="L76">                .map(Tag::new)</span>
+<span class="nc" id="L77">                .collect(Collectors.toSet());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

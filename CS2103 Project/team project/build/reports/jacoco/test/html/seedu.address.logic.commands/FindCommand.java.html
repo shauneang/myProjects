@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.commands</a> &gt; <span class="el_source">FindCommand.java</span></div><h1>FindCommand.java</h1><pre class="source lang-java linenums">package seedu.address.logic.commands;
+
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+
+/**
+ * Finds and lists all persons in address book whose name/address contains any of the argument keywords.
+ * Keyword matching is case-insensitive.
+ */
+<span class="nc" id="L11">public abstract class FindCommand extends Command {</span>
+
+    public static final String COMMAND_WORD = &quot;find&quot;;
+
+    public static final String COMMAND_SHORTCUT = &quot;f&quot;;
+
+<span class="nc" id="L17">    public static final String MESSAGE_USAGE = COMMAND_WORD + &quot;: Finds all persons whose name/address/etc contain any &quot;</span>
+            + &quot;of the specified keywords (case-insensitive) and displays them as a list with index numbers.\n&quot;
+            + &quot;Use the prefix to specify the field to search in.\n&quot;
+            + &quot;Parameters: &quot;
+            + PREFIX_NAME + &quot;NAME [MORE_NAMES]...\n&quot;
+            + &quot;Or \n&quot;
+            + PREFIX_ADDRESS + &quot;ADDRESS [MORE_ADDRESSES]...\n&quot;
+            + &quot;Or \n&quot;
+            + PREFIX_PHONE + &quot;PHONE NUMBER [MORE_NUMBERS]...\n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; n/alice bob charlie&quot;;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

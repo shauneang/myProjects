@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddMeetingCommandParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.parser</a> &gt; <span class="el_source">AddMeetingCommandParser.java</span></div><h1>AddMeetingCommandParser.java</h1><pre class="source lang-java linenums">package seedu.address.logic.parser;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_TIME;
+
+import java.util.Set;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.AddMeetingCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.MeetingTime;
+
+/**
+ * Parses input arguments and creates a new {@code AddMeetingCommand} object
+ */
+<span class="nc" id="L18">public class AddMeetingCommandParser implements Parser&lt;AddMeetingCommand&gt; {</span>
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the {@code AddMeetingCommand}
+     * and returns a {@code AddMeetingCommand} object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public AddMeetingCommand parse(String args) throws ParseException {
+<span class="nc" id="L26">        requireNonNull(args);</span>
+<span class="nc" id="L27">        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_MEETING_TIME);</span>
+
+        Index index;
+        try {
+<span class="nc" id="L31">            index = ParserUtil.parseIndex(argMultimap.getPreamble());</span>
+<span class="nc" id="L32">        } catch (IllegalValueException ive) {</span>
+<span class="nc" id="L33">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+                    AddMeetingCommand.MESSAGE_USAGE), ive);
+<span class="nc" id="L35">        }</span>
+
+<span class="nc" id="L37">        Set&lt;MeetingTime&gt; meetingTimeList = ParserUtil.parseMeetingTimes(argMultimap.getAllValues(PREFIX_MEETING_TIME));</span>
+
+<span class="nc" id="L39">        return new AddMeetingCommand(index, meetingTimeList);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

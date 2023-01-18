@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Person.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.model.person</a> &gt; <span class="el_source">Person.java</span></div><h1>Person.java</h1><pre class="source lang-java linenums">package seedu.address.model.person;
+
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import org.jetbrains.annotations.Nullable;
+
+import seedu.address.model.tag.Tag;
+
+/**
+ * Represents a Person in the address book.
+ * Guarantees: details are present and not null, field values are validated, immutable.
+ */
+public class Person {
+
+    // Empty field value
+    public static final String EMPTY_FIELD_VALUE = &quot;&quot;;
+
+    // Identity fields
+    private final Name name;
+    private final Phone phone;
+    private final Email email;
+
+    // Data fields
+    private final Address address;
+    private final Description description;
+    private NetWorth netWorth;
+<span class="nc" id="L35">    private final Set&lt;MeetingTime&gt; meetingTimes = new HashSet&lt;&gt;();</span>
+    private final FilePath filePath;
+<span class="nc" id="L37">    private final Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();</span>
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Description description,
+<span class="nc" id="L43">                  NetWorth netWorth, Set&lt;MeetingTime&gt; meetingTimes, FilePath filePath, Set&lt;Tag&gt; tags) {</span>
+<span class="nc" id="L44">        requireAllNonNull(name, phone, email, address, netWorth, meetingTimes, filePath, tags);</span>
+<span class="nc" id="L45">        this.name = name;</span>
+<span class="nc" id="L46">        this.phone = phone;</span>
+<span class="nc" id="L47">        this.email = email;</span>
+<span class="nc" id="L48">        this.address = address;</span>
+<span class="nc" id="L49">        this.description = description;</span>
+<span class="nc" id="L50">        this.netWorth = netWorth;</span>
+<span class="nc" id="L51">        this.meetingTimes.addAll(meetingTimes);</span>
+<span class="nc" id="L52">        this.filePath = filePath;</span>
+<span class="nc" id="L53">        this.tags.addAll(tags);</span>
+<span class="nc" id="L54">    }</span>
+
+    /**
+     * Constructor with no filepath, for CreateCommand only.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Description description,
+<span class="nc" id="L60">                  NetWorth netWorth, Set&lt;MeetingTime&gt; meetingTimes, Set&lt;Tag&gt; tags) {</span>
+<span class="nc" id="L61">        requireAllNonNull(name, phone, email, address, description, netWorth, meetingTimes, tags);</span>
+<span class="nc" id="L62">        this.name = name;</span>
+<span class="nc" id="L63">        this.phone = phone;</span>
+<span class="nc" id="L64">        this.email = email;</span>
+<span class="nc" id="L65">        this.address = address;</span>
+<span class="nc" id="L66">        this.description = description;</span>
+<span class="nc" id="L67">        this.netWorth = netWorth;</span>
+<span class="nc" id="L68">        this.meetingTimes.addAll(meetingTimes);</span>
+<span class="nc" id="L69">        this.filePath = new FilePath(Person.EMPTY_FIELD_VALUE);</span>
+<span class="nc" id="L70">        this.tags.addAll(tags);</span>
+<span class="nc" id="L71">    }</span>
+
+    public Name getName() {
+<span class="nc" id="L74">        return name;</span>
+    }
+
+    public Phone getPhone() {
+<span class="nc" id="L78">        return phone;</span>
+    }
+
+    public Email getEmail() {
+<span class="nc" id="L82">        return email;</span>
+    }
+
+    public Address getAddress() {
+<span class="nc" id="L86">        return address;</span>
+    }
+
+    public Description getDescription() {
+<span class="nc" id="L90">        return description;</span>
+    }
+
+    public NetWorth getNetWorth() {
+<span class="nc" id="L94">        return netWorth;</span>
+    }
+
+    public Set&lt;MeetingTime&gt; getMeetingTimes() {
+<span class="nc" id="L98">        return Collections.unmodifiableSet(meetingTimes);</span>
+    }
+
+    public FilePath getFilePath() {
+<span class="nc" id="L102">        return filePath;</span>
+    }
+
+    /**
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set&lt;Tag&gt; getTags() {
+<span class="nc" id="L110">        return Collections.unmodifiableSet(tags);</span>
+    }
+
+    /**
+     * Returns true if both persons of the same name have at least one other identity field that is the same.
+     * This defines a weaker notion of equality between two persons.
+     */
+    public boolean isSamePerson(Person otherPerson) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (otherPerson == this) {</span>
+<span class="nc" id="L119">            return true;</span>
+        }
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        return otherPerson != null</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                &amp;&amp; otherPerson.getName().equals(getName())</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                &amp;&amp; otherPerson.getPhone().equals(getPhone());</span>
+    }
+
+    /**
+     * Returns true if file path of person has been initialized
+     */
+    public boolean hasFilePath() {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        return !filePath.isEmpty();</span>
+    }
+
+    /**
+     * Deletes meetings with times that are before the local time on machine.
+     */
+    public static void syncMeetingTimes(Person toSync) {
+<span class="nc" id="L138">        Predicate&lt;MeetingTime&gt; predicate = new MeetingTimePastPredicate();</span>
+<span class="nc" id="L139">        toSync.meetingTimes.removeIf(predicate);</span>
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * Returns the earliest meeting time from the person's meeting times.
+     * @return The earliest Meeting Time object
+     */
+    public MeetingTime getEarliestMeeting() {
+<span class="nc" id="L147">        Set&lt;MeetingTime&gt; copyMeetingTimes = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L148">        copyMeetingTimes.addAll(meetingTimes);</span>
+<span class="nc" id="L149">        MeetingTime earliestMeeting = removeFirst(copyMeetingTimes);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        for (int i = 0; copyMeetingTimes.size() &gt; 0; i++) {</span>
+<span class="nc" id="L151">            MeetingTime temp = removeFirst(copyMeetingTimes);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (temp.getDate().isBefore(earliestMeeting.getDate())) {</span>
+<span class="nc" id="L153">                earliestMeeting = temp;</span>
+            }
+        }
+<span class="nc" id="L156">        return earliestMeeting;</span>
+    }
+
+    /**
+     * Removes and returns the first item from the collection of type T.
+     * @param c Collection of items to remove the first item from.
+     * @param &lt;T&gt; Generic type of the collection.
+     * @return The first item from the collection of type T.
+     */
+    @Nullable
+    public static &lt;T&gt; T removeFirst(Collection&lt;? extends T&gt; c) {
+<span class="nc" id="L167">        Iterator&lt;? extends T&gt; it = c.iterator();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!it.hasNext()) {</span>
+<span class="nc" id="L169">            return null;</span>
+        }
+<span class="nc" id="L171">        T removed = it.next();</span>
+<span class="nc" id="L172">        it.remove();</span>
+<span class="nc" id="L173">        return removed;</span>
+    }
+
+    /**
+     * Returns true if both persons have the same identity and data fields.
+     * This defines a stronger notion of equality between two persons.
+     */
+    @Override
+    public boolean equals(Object other) {
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (other == this) {</span>
+<span class="nc" id="L183">            return true;</span>
+        }
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (!(other instanceof Person)) {</span>
+<span class="nc" id="L187">            return false;</span>
+        }
+
+<span class="nc" id="L190">        Person otherPerson = (Person) other;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        return otherPerson.getName().equals(getName())</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">                &amp;&amp; otherPerson.getPhone().equals(getPhone())</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                &amp;&amp; otherPerson.getEmail().equals(getEmail())</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                &amp;&amp; otherPerson.getAddress().equals(getAddress())</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                &amp;&amp; otherPerson.getTags().equals(getTags())</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                &amp;&amp; otherPerson.getDescription().equals(getDescription())</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                &amp;&amp; otherPerson.getNetWorth().equals(getNetWorth())</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                &amp;&amp; otherPerson.getMeetingTimes().equals(getMeetingTimes())</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                &amp;&amp; otherPerson.getFilePath().equals(getFilePath());</span>
+    }
+
+    @Override
+    public int hashCode() {
+        // use this method for custom fields hashing instead of implementing your own
+<span class="nc" id="L205">        return Objects.hash(name, phone, email, address, tags, description, netWorth, meetingTimes, filePath);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L210">        final StringBuilder builder = new StringBuilder();</span>
+<span class="nc" id="L211">        builder.append(getName())</span>
+<span class="nc" id="L212">                .append(&quot; Phone: &quot;)</span>
+<span class="nc" id="L213">                .append(getPhone())</span>
+<span class="nc" id="L214">                .append(&quot; Email: &quot;)</span>
+<span class="nc" id="L215">                .append(getEmail())</span>
+<span class="nc" id="L216">                .append(&quot; Address: &quot;)</span>
+<span class="nc" id="L217">                .append(getAddress())</span>
+<span class="nc" id="L218">                .append(&quot; Description: &quot;)</span>
+<span class="nc" id="L219">                .append(getDescription())</span>
+<span class="nc" id="L220">                .append(&quot; Net Worth: &quot;)</span>
+<span class="nc" id="L221">                .append(getNetWorth())</span>
+<span class="nc" id="L222">                .append(&quot; Meeting time: &quot;);</span>
+<span class="nc" id="L223">        getMeetingTimes().forEach(builder::append);</span>
+<span class="nc" id="L224">        builder.append(&quot; File Path: &quot;)</span>
+<span class="nc" id="L225">                .append(getFilePath())</span>
+<span class="nc" id="L226">                .append(&quot; Tags: &quot;);</span>
+<span class="nc" id="L227">        getTags().forEach(builder::append);</span>
+<span class="nc" id="L228">        return builder.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

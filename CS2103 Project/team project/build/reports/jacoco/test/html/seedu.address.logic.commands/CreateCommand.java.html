@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreateCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.commands</a> &gt; <span class="el_source">CreateCommand.java</span></div><h1>CreateCommand.java</h1><pre class="source lang-java linenums">package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_TIME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NETWORTH;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.person.Person;
+
+/**
+ * Adds a person to the address book.
+ */
+public class CreateCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = &quot;create&quot;;
+
+    public static final String COMMAND_SHORTCUT = &quot;c&quot;;
+
+<span class="nc" id="L26">    public static final String MESSAGE_USAGE = COMMAND_WORD + &quot;: Creates a person to the address book. &quot;</span>
+            + &quot;Parameters: &quot;
+            + &quot;[&quot; + PREFIX_NAME + &quot;NAME] &quot;
+            + &quot;[&quot; + PREFIX_PHONE + &quot;PHONE] &quot;
+            + &quot;[&quot; + PREFIX_EMAIL + &quot;EMAIL] &quot;
+            + &quot;[&quot; + PREFIX_ADDRESS + &quot;ADDRESS] &quot;
+            + &quot;[&quot; + PREFIX_DESCRIPTION + &quot;DESCRIPTION] &quot;
+            + &quot;[&quot; + PREFIX_NETWORTH + &quot;NETWORTH] &quot;
+            + &quot;[&quot; + PREFIX_MEETING_TIME + &quot;MEETING TIME] &quot;
+            + &quot;[&quot; + PREFIX_TAG + &quot;TAG]...\n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; &quot;
+            + PREFIX_NAME + &quot;John Doe &quot;
+            + PREFIX_PHONE + &quot;98765432 &quot;
+            + PREFIX_EMAIL + &quot;johnd@example.com &quot;
+            + PREFIX_ADDRESS + &quot;311, Clementi Ave 2, #02-25 &quot;
+            + PREFIX_DESCRIPTION + &quot;Likes drinking coffee &quot;
+            + PREFIX_NETWORTH + &quot;$1423 &quot;
+            + PREFIX_MEETING_TIME + &quot;15-12-2022-19:00 &quot;
+            + PREFIX_TAG + &quot;Potential&quot;;
+
+    public static final String MESSAGE_SUCCESS = &quot;New person added: %1$s&quot;;
+    public static final String MESSAGE_DUPLICATE_PERSON = &quot;This person already exists in the address book&quot;;
+    public static final String MESSAGE_UNDO = &quot;Person removed: %1$s&quot;;
+    public static final String MESSAGE_REDO = &quot;Person added back: %1$s&quot;;
+
+    private final Person toAdd;
+
+    /**
+     * Creates an CreateCommand to add the specified {@code Person}
+     */
+<span class="nc" id="L56">    public CreateCommand(Person person) {</span>
+<span class="nc" id="L57">        requireNonNull(person);</span>
+<span class="nc" id="L58">        toAdd = person;</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException {
+<span class="nc" id="L63">        requireNonNull(model);</span>
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (model.hasPerson(toAdd)) {</span>
+<span class="nc" id="L66">            throw new CommandException(MESSAGE_DUPLICATE_PERSON);</span>
+        }
+
+<span class="nc" id="L69">        model.addPerson(toAdd);</span>
+<span class="nc" id="L70">        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));</span>
+    }
+
+    @Override
+    public CommandResult undo(Model model) {
+<span class="nc" id="L75">        model.deletePerson(toAdd);</span>
+<span class="nc" id="L76">        return new CommandResult(String.format(MESSAGE_UNDO, toAdd));</span>
+    }
+
+    @Override
+    public CommandResult redo(Model model) {
+<span class="nc" id="L81">        model.addPerson(toAdd);</span>
+<span class="nc" id="L82">        return new CommandResult(String.format(MESSAGE_REDO, toAdd));</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="nc bnc" id="L87" title="All 4 branches missed.">        return other == this // short circuit if same object</span>
+                || (other instanceof CreateCommand // instanceof handles nulls
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                &amp;&amp; toAdd.equals(((CreateCommand) other).toAdd));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
